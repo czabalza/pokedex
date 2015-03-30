@@ -21,6 +21,19 @@ Pokedex.RootView.prototype.renderToyDetail = function (toy) {
     $ul.append($li);
   });
   $div.append($ul);
+  var $select = $('<select>');
+  $select.data('pokemon-id', toy.get('pokemon_id'));
+  $select.data('toy-id', toy.get('id'));
+  this.pokes.each(function(pokemon) {
+    var $option = $('<option>');
+    $option.val(pokemon.escape('id'));
+    $option.html(pokemon.escape('name'));
+    if (pokemon.get('id') === toy.get('pokemon_id')) {
+      $option.prop('selected', true);
+    }
+    $select.append($option);
+  }, this);
+  $div.append($select);
   this.$toyDetail.empty();
   this.$toyDetail.append($div);
 };

@@ -20,15 +20,17 @@ Pokedex.RootView.prototype.renderPokemonDetail = function (pokemon) {
   $div.append($toyUl);
   pokemon.fetch({
     success: function () {
-      pokemon.toys().forEach(function(toy) {
-        this.addToyToList(toy);
-        // console.log(toy);
-      }.bind(this));
+      // pokemon.toys().forEach(function(toy) {
+      //   this.addToyToList(toy);
+      //   // console.log(toy);
+      // }.bind(this));
+      this.renderToysList(pokemon.toys());
     }.bind(this)
   });
 
   this.$pokeDetail.empty();
   this.$pokeDetail.append($div);
+  this.$toyDetail.empty();
 };
 
 Pokedex.RootView.prototype.selectPokemonFromList = function (event) {
