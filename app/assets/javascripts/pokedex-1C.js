@@ -5,8 +5,6 @@ Pokedex.RootView.prototype.createPokemon = function (attrs, callback) {
       this.pokes.add(newPoke);
       this.addPokemonToList(newPoke);
       callback(newPoke);
-      1 + 1
-      2 + 2
     }.bind(this)
   });
 };

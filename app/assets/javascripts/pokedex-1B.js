@@ -5,12 +5,28 @@ Pokedex.RootView.prototype.renderPokemonDetail = function (pokemon) {
   var $ul = $('<ul>');
 
   pokemon.keys().forEach(function(key) {
+    if (key === 'image_url') {
+      return;
+    }
     var $li = $('<li>');
     $li.html(key + ": " + pokemon.escape(key));
     $ul.append($li);
   });
 
   $div.append($ul);
+  var $toyUl = $('<ul>');
+  $toyUl.html('TOYS');
+  $toyUl.addClass('toys');
+  $div.append($toyUl);
+  pokemon.fetch({
+    success: function () {
+      pokemon.toys().forEach(function(toy) {
+        this.addToyToList(toy);
+        // console.log(toy);
+      }.bind(this));
+    }.bind(this)
+  });
+
   this.$pokeDetail.empty();
   this.$pokeDetail.append($div);
 };

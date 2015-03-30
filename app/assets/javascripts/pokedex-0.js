@@ -3,17 +3,37 @@ window.Pokedex.Models = {};
 window.Pokedex.Collections = {};
 
 Pokedex.Models.Pokemon = Backbone.Model.extend({
-  urlRoot: '/pokemon'
+  urlRoot: '/pokemon',
+
+  toys: function() {
+    if (!this._toys) {
+      this._toys = new Pokedex.Collections.PokemonToys();
+    }
+    return this._toys;
+  },
+
+  parse: function(payload) {
+    if (payload.toys) {
+      this.toys().set(payload.toys);
+      delete payload.toys;
+    }
+    return payload;
+  }
 }); // WRITE ME
 
-Pokedex.Models.Toy = null; // WRITE ME IN PHASE 2
+Pokedex.Models.Toy = Backbone.Model.extend({
+  urlRoot: '/toys'
+}); // WRITE ME IN PHASE 2
 
 Pokedex.Collections.Pokemon = Backbone.Collection.extend({
   url: '/pokemon',
   model: Pokedex.Models.Pokemon
 }); // WRITE ME
 
-Pokedex.Collections.PokemonToys = null; // WRITE ME IN PHASE 2
+Pokedex.Collections.PokemonToys = Backbone.Collection.extend({
+  url: '/toys',
+  model: Pokedex.Models.Toy
+}); // WRITE ME IN PHASE 2
 
 window.Pokedex.Test = {
   testShow: function (id) {
@@ -44,8 +64,9 @@ window.Pokedex.RootView = function ($el) {
   this.$toyDetail = this.$el.find('.toy-detail');
 
   // Click handlers go here.
-  this.$el.on('click', 'li', this.selectPokemonFromList.bind(this));
+  this.$pokeList.on('click', 'li', this.selectPokemonFromList.bind(this));
   this.$el.on('submit', 'form', this.submitPokemonForm.bind(this));
+  this.$pokeDetail.on('click', 'ul.toys li', this.selectToyFromList.bind(this));
 };
 
 $(function() {
